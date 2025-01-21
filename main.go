@@ -21,8 +21,12 @@ THE SOFTWARE.
 */
 package main
 
-import "github.com/geuun/goroutine-example/cmd"
+import "net/http"
 
 func main() {
-	cmd.Execute()
+	http.HandleFunc("/", func(writer http.ResponseWriter, request *http.Request) {
+		writer.Write([]byte("Hello, World!"))
+	})
+
+	http.ListenAndServe(":8080", nil)
 }
