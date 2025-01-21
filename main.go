@@ -21,12 +21,43 @@ THE SOFTWARE.
 */
 package main
 
-import "net/http"
+import (
+	"encoding/json"
+	"fmt"
+	"github.com/geuun/goroutine-example/controller"
+	"net/http"
+	"strconv"
+)
 
 func main() {
-	http.HandleFunc("/", func(writer http.ResponseWriter, request *http.Request) {
-		writer.Write([]byte("Hello, World!"))
+	http.HandleFunc("/", func(res http.ResponseWriter, req *http.Request) {
+		json.NewEncoder(res).Encode("Hello, World!")
 	})
 
+	http.HandleFunc("/posts", func(res http.ResponseWriter, req *http.Request) {
+		if req.Method != http.MethodGet {
+			http.Error(res, "Method not allowed", http.StatusMethodNotAllowed)
+			return
+		}
+
+		controller.GetPosts(res, req)
+	})
+
+	http.HandleFunc("/post/", func(res http.ResponseWriter, req *http.Request) {
+		if req.Method != http.MethodGet {
+			http.Error(res, "Method not allowed", http.StatusMethodNotAllowed)
+			return
+		}
+
+		idStr := req.URL.Path[len("/post/"):]
+		id, err := strconv.Atoi(idStr)
+		if err != nil {
+			http.Error(res, "Invalid post Id", http.StatusBadRequest)
+		}
+
+		controller.GetPost(res, req, id)
+	})
+
+	fmt.Println("Server is running on port 8080...")
 	http.ListenAndServe(":8080", nil)
 }
