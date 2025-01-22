@@ -24,7 +24,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/geuun/goroutine-example/handler"
+	"github.com/geuun/goroutine-example/handlers"
 	"net/http"
 	"strconv"
 )
@@ -40,7 +40,7 @@ func main() {
 			return
 		}
 
-		handler.GetPosts(res, req)
+		handlers.GetPosts(res, req)
 	})
 
 	http.HandleFunc("/post/", func(res http.ResponseWriter, req *http.Request) {
@@ -55,7 +55,7 @@ func main() {
 			http.Error(res, "Invalid post Id", http.StatusBadRequest)
 		}
 
-		handler.GetPost(res, req, id)
+		handlers.GetPost(res, req, id)
 	})
 
 	fmt.Println("Server is running on port 8080...")

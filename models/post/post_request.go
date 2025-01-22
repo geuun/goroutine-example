@@ -1,36 +1,69 @@
 package post
 
+type request struct {
+	userId int    `json:"userId"`
+	title  string `json:"title"`
+	body   string `json:"body"`
+}
+
 type Request interface {
-	UserId() Request
-	Title() Request
-	Body() Request
+	UserId() int
+	Title() string
+	Body() string
+}
+
+func (r *request) UserId() int {
+	return r.userId
+}
+
+func (r *request) Title() string {
+	return r.title
+}
+
+func (r *request) Body() string {
+	return r.body
 }
 
 type RequestBuilder interface {
 	SetUserId(userId int) RequestBuilder
 	SetTitle(title string) RequestBuilder
 	SetBody(body string) RequestBuilder
-	Build() (Request, error)
+	Build() Request
 }
 
-type postRequest struct {
-	UserId int    `json:"userId"`
-	Title  string `json:"title"`
-	Body   string `json:"body"`
+type requestBuilder struct {
+	userId int
+	title  string
+	body   string
 }
 
-type postRequestBuilder struct {
-	request *postRequest
+func (rb *requestBuilder) SetUserId(userId int) RequestBuilder {
+	rb.userId = userId
+	return rb
 }
 
-func (r *postRequest) GetUserId() int {
-	return r.UserId
+func (rb *requestBuilder) SetTitle(title string) RequestBuilder {
+	rb.title = title
+	return rb
 }
 
-func (r postRequest) GetTitle() string {
-	return r.Title
+func (rb *requestBuilder) SetBody(body string) RequestBuilder {
+	rb.body = body
+	return rb
 }
 
-func (r postRequest) GetBody() string {
-	return r.Body
+func (rb *requestBuilder) Build() Request {
+	return &request{
+		userId: rb.userId,
+		title:  rb.title,
+		body:   rb.body,
+	}
+}
+
+func NewRequest() RequestBuilder {
+	return &requestBuilder{
+		userId: 0,
+		title:  "",
+		body:   "",
+	}
 }
