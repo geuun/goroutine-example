@@ -9,9 +9,9 @@ import (
  * Common response struct
  */
 type response struct {
-	Status  int         `json:"status"`
-	Message string      `json:"message"`
-	Data    interface{} `json:"data"`
+	Status  int         `json:"status" xml:"status"`
+	Message string      `json:"message" xml:"message"`
+	Data    interface{} `json:"data,omitempty" xml:"data,omitempty"`
 }
 
 type Response interface {

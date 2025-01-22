@@ -22,16 +22,20 @@ THE SOFTWARE.
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"github.com/geuun/goroutine-example/handlers"
+	"github.com/geuun/goroutine-example/models/common"
 	"net/http"
 	"strconv"
 )
 
 func main() {
 	http.HandleFunc("/", func(res http.ResponseWriter, req *http.Request) {
-		json.NewEncoder(res).Encode("Hello, World!")
+		common.SendResponse(res, http.StatusOK, "Hello, World!", nil)
+	})
+
+	http.HandleFunc("/ping", func(res http.ResponseWriter, req *http.Request) {
+		common.SendResponse(res, http.StatusOK, "pong", nil)
 	})
 
 	http.HandleFunc("/posts", func(res http.ResponseWriter, req *http.Request) {
