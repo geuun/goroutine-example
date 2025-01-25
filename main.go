@@ -53,8 +53,6 @@ func main() {
 		handlers.GetPost(res, req, id)
 	})
 
-	http.HandleFunc("/post/")
-
 	http.HandleFunc("/posts", func(res http.ResponseWriter, req *http.Request) {
 		if req.Method != http.MethodGet {
 			http.Error(res, "Method not allowed", http.StatusMethodNotAllowed)
