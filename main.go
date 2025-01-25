@@ -38,16 +38,7 @@ func main() {
 		common.SendResponse(res, http.StatusOK, "pong", nil)
 	})
 
-	http.HandleFunc("/posts", func(res http.ResponseWriter, req *http.Request) {
-		if req.Method != http.MethodGet {
-			http.Error(res, "Method not allowed", http.StatusMethodNotAllowed)
-			return
-		}
-
-		handlers.GetPosts(res, req)
-	})
-
-	http.HandleFunc("/post/", func(res http.ResponseWriter, req *http.Request) {
+	http.HandleFunc("/post", func(res http.ResponseWriter, req *http.Request) {
 		if req.Method != http.MethodGet {
 			http.Error(res, "Method not allowed", http.StatusMethodNotAllowed)
 			return
@@ -60,6 +51,17 @@ func main() {
 		}
 
 		handlers.GetPost(res, req, id)
+	})
+
+	http.HandleFunc("/post/")
+
+	http.HandleFunc("/posts", func(res http.ResponseWriter, req *http.Request) {
+		if req.Method != http.MethodGet {
+			http.Error(res, "Method not allowed", http.StatusMethodNotAllowed)
+			return
+		}
+
+		handlers.GetPosts(res, req)
 	})
 
 	fmt.Println("Server is running on port 8080...")
